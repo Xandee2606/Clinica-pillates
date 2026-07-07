@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Usuario {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  senha    String
+  nome     String
+  role     String   @default("admin")
+  criadoEm DateTime @default(now())
+}
+
+model Cliente {
+  id           String        @id @default(uuid())
+  nome         String
+  email        String        @unique
+  telefone     String
+  dataNasc     DateTime?
+  observacoes  String?
+  criadoEm     DateTime      @default(now())
+  agendamentos Agendamento[]
+}
+
+model Modalidade {
+  id           String        @id @default(uuid())
+  nome         String
+  descricao    String?
+  duracao      Int // em minutos
+  vagas        Int // máximo de alunos simultâneos
+  valor        Decimal       @db.Decimal(10, 2)
+  foto         String? // URL da imagem (upload de arquivo p/ storage fica p/ depois)
+  ativa        Boolean       @default(true)
+  agendamentos Agendamento[]
+}
+
+model HorarioFuncionamento {
+  id         String  @id @default(uuid())
+  diaSemana  Int // 0=domingo, 1=segunda... 6=sábado
+  horaInicio String // formato "HH:MM"
+  horaFim    String
+  ativo      Boolean @default(true)
+}
+
+model Agendamento {
+  id            String     @id @default(uuid())
+  cliente       Cliente    @relation(fields: [clienteId], references: [id])
+  clienteId     String
+  modalidade    Modalidade @relation(fields: [modalidadeId], references: [id])
+  modalidadeId  String
+  dataHora      DateTime
+  status        String     @default("confirmado") // confirmado | cancelado | concluido | falta
+  valorCobrado  Decimal?   @db.Decimal(10, 2) // pode diferir do valor padrão da modalidade
+  googleEventId String?
+  observacoes   String?
+  criadoEm      DateTime   @default(now())
+  atualizadoEm  DateTime   @updatedAt
+
+  // Um slot (modalidade + dataHora) aceita até `vagas` clientes distintos.
+  // Esta constraint impede que o MESMO cliente marque o mesmo horário duas vezes
+  // na mesma modalidade; a capacidade por vagas é validada na aplicação.
+  @@unique([clienteId, modalidadeId, dataHora])
+  @@index([clienteId])
+  @@index([modalidadeId, dataHora])
+  @@index([dataHora])
+  @@index([status])
+}
+
+model Pagamento {
+  id            String   @id @default(uuid())
+  clienteId     String
+  agendamentoId String?
+  valor         Decimal  @db.Decimal(10, 2)
+  tipo          String // avulso | mensalidade | pacote
+  status        String   @default("pago") // pago | pendente | cancelado
+  dataPagamento DateTime @default(now())
+  observacoes   String?
+  criadoEm      DateTime @default(now())
+}
+
+model Configuracao {
+  id         String   @id @default(uuid())
+  nome       String
+  endereco   String?
+  whatsapp   String?
+  instagram  String?
+  atualizado DateTime @updatedAt
+}
