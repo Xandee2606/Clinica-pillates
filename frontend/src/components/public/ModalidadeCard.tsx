@@ -21,8 +21,10 @@ export function ModalidadeCard({ modalidade, index }: Props) {
 
   return (
     <Card className="group flex h-full flex-col overflow-hidden transition-shadow hover:shadow-md hover:shadow-sage-900/10">
-      {/* Foto da modalidade, ou placeholder gradiente quando não houver. */}
-      <div className={`relative aspect-[16/10] bg-gradient-to-br ${gradiente}`}>
+      {/* Foto da modalidade, ou placeholder gradiente quando não houver.
+          Proporção 4/3: as fotos do estúdio são verticais, então um recorte
+          menos panorâmico preserva mais do ambiente. */}
+      <div className={`relative aspect-[4/3] bg-gradient-to-br ${gradiente}`}>
         {modalidade.foto ? (
           <img
             src={modalidade.foto}

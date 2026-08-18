@@ -14,9 +14,15 @@ export function Sobre() {
     <section id="sobre" className="scroll-mt-20 py-20">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-2">
         <Reveal>
-          <div className="relative aspect-[5/4] overflow-hidden rounded-[2rem] bg-gradient-to-br from-cream-200 via-cream-300 to-clay-400/60 shadow-lg shadow-sage-900/10">
-            <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_25%_75%,white,transparent_55%)]" />
-            <div className="absolute bottom-6 left-6 rounded-2xl bg-white/90 px-5 py-4 shadow-sm">
+          {/* Proporção 4/5 acompanha a orientação vertical da foto do estúdio. */}
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[2rem] shadow-lg shadow-sage-900/10">
+            <img
+              src="/images/clinica/cadillac.jpg"
+              alt="Cadillac do estúdio, com bola de pilates ao lado e luz natural pela cortina"
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+            />
+            <div className="absolute bottom-6 left-6 rounded-2xl bg-white/90 px-5 py-4 shadow-sm backdrop-blur-sm">
               <p className="font-display text-lg font-medium text-sage-800">Feito para o seu corpo</p>
               <p className="font-body text-sm text-sage-600">no seu tempo, com método</p>
             </div>

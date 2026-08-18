@@ -58,8 +58,14 @@ export function Hero() {
 
         {/* Composição visual */}
         <div className="relative animate-fade-up [animation-delay:120ms]">
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] bg-gradient-to-br from-sage-300 via-sage-400 to-sage-600 shadow-xl shadow-sage-900/20">
-            <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_30%_20%,white,transparent_45%)]" />
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] shadow-xl shadow-sage-900/20">
+            <img
+              src="/images/clinica/recepcao-ripas.jpg"
+              alt="Recepção da clínica com divisória de ripas de madeira e vista para a sala de aparelhos"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* Degradê garante legibilidade da frase sobre a foto */}
+            <div className="absolute inset-0 bg-gradient-to-t from-sage-950/85 via-sage-950/25 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-8">
               <SparkleIcon className="h-8 w-8 text-cream-50/90" />
               <p className="mt-3 font-display text-2xl font-medium leading-snug text-cream-50">

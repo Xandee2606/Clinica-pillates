@@ -18,6 +18,13 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.
       return
     }
 
+    // Navegador sem IntersectionObserver: mostra o conteúdo direto, sem animação.
+    // Sem isso, a seção ficaria invisível permanentemente.
+    if (typeof IntersectionObserver === 'undefined') {
+      setVisivel(true)
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

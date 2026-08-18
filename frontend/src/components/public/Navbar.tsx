@@ -7,6 +7,7 @@ import { useClinica } from '../../hooks/useClinica'
 const links = [
   { label: 'Modalidades', href: '/#modalidades' },
   { label: 'Como funciona', href: '/#como-funciona' },
+  { label: 'Nosso espaço', href: '/#espaco' },
   { label: 'Sobre', href: '/#sobre' },
 ]
 

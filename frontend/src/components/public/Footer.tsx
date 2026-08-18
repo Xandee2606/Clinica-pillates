@@ -36,6 +36,11 @@ export function Footer() {
               </a>
             </li>
             <li>
+              <a href="/#espaco" className="text-cream-200/80 hover:text-cream-50">
+                Nosso espaço
+              </a>
+            </li>
+            <li>
               <a href="/#sobre" className="text-cream-200/80 hover:text-cream-50">
                 Sobre a clínica
               </a>

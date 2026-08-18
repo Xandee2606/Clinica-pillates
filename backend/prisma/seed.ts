@@ -35,6 +35,7 @@ async function main() {
       duracao: 50,
       vagas: 1,
       valor: new Prisma.Decimal('80.00'),
+      foto: '/images/clinica/reformer-luz-natural.jpg',
     },
     {
       nome: 'Pilates em Grupo',
@@ -42,6 +43,7 @@ async function main() {
       duracao: 60,
       vagas: 5,
       valor: new Prisma.Decimal('50.00'),
+      foto: '/images/clinica/sala-ampla.jpg',
     },
     {
       nome: 'Pilates Aparelho',
@@ -49,6 +51,7 @@ async function main() {
       duracao: 50,
       vagas: 2,
       valor: new Prisma.Decimal('100.00'),
+      foto: '/images/clinica/aparelhos-step-chair.jpg',
     },
   ]
 
@@ -57,6 +60,10 @@ async function main() {
     if (!existente) {
       await prisma.modalidade.create({ data: m })
       console.log(`✔ Modalidade criada: ${m.nome}`)
+    } else if (!existente.foto && m.foto) {
+      // Preenche a foto de modalidades já criadas antes deste campo existir.
+      await prisma.modalidade.update({ where: { id: existente.id }, data: { foto: m.foto } })
+      console.log(`✔ Foto adicionada: ${m.nome}`)
     } else {
       console.log(`• Modalidade já existe: ${m.nome}`)
     }
