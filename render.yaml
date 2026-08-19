@@ -1,0 +1,61 @@
+# Blueprint do Render para o backend da clínica.
+# Importar em: https://dashboard.render.com/blueprints  → New Blueprint Instance
+#
+# As variáveis marcadas com `sync: false` NÃO ficam no Git: o Render pede o valor
+# na hora de criar o serviço (ou você preenche depois em Environment).
+services:
+  - type: web
+    name: clinica-pilates-backend
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Banco (Supabase) — pooler para a app, conexão direta para migrations
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      # Autenticação
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 8h
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 30d
+      # Admin do painel
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      # Libera o CORS para o site na Vercel
+      - key: FRONTEND_URL
+        value: https://clinica-pilates-frontend.vercel.app
+      # Dados da clínica (fallback quando não preenchidos no painel admin)
+      - key: CLINICA_NOME
+        sync: false
+      # Integrações opcionais — sem elas o sistema funciona normalmente,
+      # apenas sem evento no Google Agenda e sem e-mail de confirmação.
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REFRESH_TOKEN
+        sync: false
+      - key: GOOGLE_CALENDAR_ID
+        value: primary
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false

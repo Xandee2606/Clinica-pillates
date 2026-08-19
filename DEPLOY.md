@@ -1,112 +1,93 @@
-# Guia de Deploy (Vercel + Railway)
+# Guia de Deploy
 
-Frontend na **Vercel**, backend na **Railway**, banco no **Supabase** (já configurado).
-Fazer deploy **não trava nada**: a cada mudança no código, é só dar `git push` e os dois
-serviços refazem o deploy sozinhos.
+**Frontend:** Vercel (já no ar) · **Backend:** Render · **Banco:** Supabase
 
-O que já está pronto no código:
-- `frontend/vercel.json` — rewrites de SPA (rotas do React funcionam ao recarregar).
-- `backend/railway.json` — usa `npm run start:prod` (aplica migrations + sobe o servidor).
-- `backend` `postinstall` gera o Prisma Client automaticamente.
+Estado atual:
+- Frontend: <https://clinica-pilates-frontend.vercel.app> — no ar, deploy automático a cada `git push`.
+- Banco: Supabase (plano gratuito) — funcionando.
+- Backend: migrando do Railway para o Render (o trial do Railway expirou).
 
 ---
 
-## Passo 0 — Subir o código para o GitHub
+## Backend no Render (plano gratuito)
 
-Vercel e Railway fazem deploy a partir de um repositório Git.
+O arquivo `render.yaml` na raiz já descreve o serviço. Os segredos **não** estão nele —
+o Render pede os valores na criação.
 
-1. Crie um repositório novo (vazio) no [GitHub](https://github.com/new) — pode ser privado.
-2. No terminal, na raiz do projeto:
-   ```bash
-   git add .
-   git commit -m "Sistema da clínica de pilates"
-   git branch -M main
-   git remote add origin https://github.com/SEU-USUARIO/SEU-REPO.git
-   git push -u origin main
-   ```
-   > O `.env` **não** vai junto (está no `.gitignore`). As chaves ficam só nos painéis
-   > da Vercel/Railway.
+### Passo a passo
 
----
+1. Acesse <https://dashboard.render.com> e entre com o GitHub.
+2. **New → Blueprint** e selecione o repositório `Clinica-pillates`.
+3. O Render lê o `render.yaml` e pede as variáveis marcadas como "sync: false".
+   Preencha com os valores do seu `backend/.env` local:
 
-## Passo 1 — Backend na Railway
+   | Variável | Onde encontrar |
+   |---|---|
+   | `DATABASE_URL` | `backend/.env` (pooler, porta 6543) |
+   | `DIRECT_URL` | `backend/.env` (porta 5432) |
+   | `ADMIN_EMAIL` | e-mail de login do painel |
+   | `ADMIN_PASSWORD` | senha do painel (**troque a padrão**) |
+   | `CLINICA_NOME` | nome da clínica |
+   | `GOOGLE_*` / `SMTP_*` | opcionais — deixe em branco se não for usar agora |
 
-1. Acesse [railway.app](https://railway.app) e faça login com o GitHub.
-2. **New Project → Deploy from GitHub repo** → selecione o repositório.
-3. Em **Settings** do serviço:
-   - **Root Directory**: `backend`  ← importante (é um monorepo).
-   - O start/build já vêm do `railway.json`.
-4. Em **Variables**, adicione (veja a lista completa abaixo). No mínimo, para o preview:
-   `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `JWT_EXPIRES_IN`,
-   `JWT_REFRESH_EXPIRES_IN`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `NODE_ENV=production`.
-   - Pode copiar os valores do seu `backend/.env` local (DATABASE_URL, DIRECT_URL e os
-     JWT secrets já existem lá).
-   - **Não** defina `PORT` — a Railway injeta sozinha.
-   - `FRONTEND_URL` você preenche no Passo 3 (depois de ter a URL da Vercel).
-5. Deploy. Ao terminar, em **Settings → Networking → Generate Domain**, copie a URL pública
-   (ex.: `https://clinica-backend-production.up.railway.app`).
-6. Teste: abra `https://SUA-URL-RAILWAY/api/health` → deve responder `{"status":"ok"}`.
+   > `JWT_SECRET` e `JWT_REFRESH_SECRET` são gerados automaticamente pelo Render.
 
----
+4. **Apply**. O primeiro build leva alguns minutos.
+5. Copie a URL gerada (algo como `https://clinica-pilates-backend.onrender.com`).
 
-## Passo 2 — Frontend na Vercel
+### Passo final — conectar o frontend ao novo backend
 
-1. Acesse [vercel.com](https://vercel.com) e faça login com o GitHub.
-2. **Add New → Project** → importe o mesmo repositório.
-3. Em **Configure Project**:
-   - **Root Directory**: `frontend`  ← importante.
-   - Framework: **Vite** (detecta sozinho). Build: `npm run build`, Output: `dist`.
-4. Em **Environment Variables**, adicione:
-   - `VITE_API_URL` = a URL da Railway do Passo 1 **+ `/api`**
-     (ex.: `https://clinica-backend-production.up.railway.app/api`).
-5. **Deploy**. Ao terminar, copie a URL da Vercel (ex.: `https://clinica.vercel.app`).
+Na Vercel, atualize a variável do frontend para a URL do Render **+ `/api`**:
+
+```bash
+vercel env rm VITE_API_URL production --yes
+echo "https://SUA-URL.onrender.com/api" | vercel env add VITE_API_URL production
+git commit --allow-empty -m "redeploy" && git push
+```
 
 ---
 
-## Passo 3 — Conectar os dois (CORS)
+## ⚠️ Limitação do plano gratuito do Render
 
-1. Volte na **Railway → Variables** e defina:
-   - `FRONTEND_URL` = a URL da Vercel do Passo 2 (ex.: `https://clinica.vercel.app`).
-2. A Railway refaz o deploy sozinha. Pronto — o CORS em produção libera só esse domínio.
+O serviço **hiberna após ~15 minutos sem acesso**. A primeira visita depois disso
+espera **~50 segundos** o servidor acordar. Nas visitas seguintes, fica normal.
 
----
-
-## Variáveis de ambiente do backend (Railway)
-
-| Variável | Obrigatória | Observação |
-|----------|:-----------:|------------|
-| `DATABASE_URL` | ✅ | Transaction Pooler (6543) — copie do `.env` local |
-| `DIRECT_URL` | ✅ | Session Pooler (5432) — para migrations |
-| `JWT_SECRET` | ✅ | Segredo forte (copie do `.env` ou gere um novo) |
-| `JWT_REFRESH_SECRET` | ✅ | Idem, diferente do anterior |
-| `JWT_EXPIRES_IN` | ✅ | `8h` |
-| `JWT_REFRESH_EXPIRES_IN` | ✅ | `30d` |
-| `ADMIN_EMAIL` | ✅ | E-mail de login do painel |
-| `ADMIN_PASSWORD` | ✅ | **Troque o placeholder antes de produção** |
-| `NODE_ENV` | ✅ | `production` |
-| `FRONTEND_URL` | ✅ | URL da Vercel (Passo 3) |
-| `SUPABASE_SERVICE_ROLE_KEY` | opcional | Só se for usar recursos diretos do Supabase |
-| `GOOGLE_CLIENT_ID` / `_SECRET` / `_REFRESH_TOKEN` / `_CALENDAR_ID` | opcional | Ativa o Google Calendar |
-| `SMTP_HOST` / `_PORT` / `_USER` / `_PASS` | opcional | Ativa o e-mail de confirmação |
-| `CLINICA_NOME` / `_ENDERECO` / `_WHATSAPP` / `_INSTAGRAM` | opcional | Fallback dos dados da clínica |
-
-> Para gerar novos segredos JWT:
-> `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`
-
-## Variáveis do frontend (Vercel)
-
-| Variável | Valor |
-|----------|-------|
-| `VITE_API_URL` | URL da Railway **+ `/api`** |
+Para uso real com clientes agendando, considere um plano pago (Render Starter ou
+Railway Hobby, ~US$ 5–7/mês), que elimina a hibernação.
 
 ---
 
-## Observações importantes
+## Frontend na Vercel (já configurado)
 
-- **Mesmo banco:** o preview usa o mesmo Supabase do desenvolvimento. O usuário admin e as
-  modalidades já existem. Os dados de teste (`@dev.local`) também — rode
-  `npm run seed:dev:limpar` (local) para limpar antes da dona testar, se preferir começar zerado.
-- **Trocar senha do admin:** altere `ADMIN_PASSWORD` na Railway e rode o seed de novo, OU
-  redefina direto no banco. (O seed atual não sobrescreve a senha de um admin já existente.)
-- **A cada mudança:** `git push` → Vercel e Railway refazem o deploy automaticamente.
-- **Recarregar página no `/admin/...`:** funciona graças ao `vercel.json` (rewrites de SPA).
+- **Root Directory:** `frontend` (essencial — é um monorepo).
+- **Deploy:** automático via integração GitHub. Basta `git push`.
+- `frontend/vercel.json` cuida das rotas do React (SPA rewrites).
+
+> O upload direto pelo CLI (`vercel --prod`) falha nesta máquina com timeout.
+> Use `git push` para publicar.
+
+---
+
+## Banco no Supabase
+
+- `DATABASE_URL` usa o **Transaction Pooler** (porta 6543) com
+  `?pgbouncer=true&connection_limit=5&pool_timeout=20`.
+- `DIRECT_URL` usa a porta 5432 (migrations).
+- **O projeto pausa após ~1 semana sem uso** (plano gratuito). Se isso acontecer,
+  basta acessar o painel do Supabase e restaurar — os dados são preservados.
+  Durante a restauração o banco passa por um estado em que as tabelas parecem não
+  existir; espere terminar antes de concluir qualquer coisa.
+
+---
+
+## Rodar localmente
+
+```bash
+# backend (porta 3333)
+cd backend && npm install && npm run dev
+
+# frontend (porta 5173)
+cd frontend && npm install && npm run dev
+```
+
+Site em `http://localhost:5173`, painel em `/login`.
