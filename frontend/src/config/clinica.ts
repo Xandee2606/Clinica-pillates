@@ -7,7 +7,7 @@
  */
 
 export const CLINICA_FALLBACK = {
-  nome: '[NOME DA CLÍNICA]',
+  nome: 'Serrão Santos Fisioterapia',
   endereco: 'Rua Exemplo, 123 — Bairro, Cidade/UF',
   // Apenas dígitos, com DDI 55. Ex.: 5511999998888
   whatsapp: '5599999999999',

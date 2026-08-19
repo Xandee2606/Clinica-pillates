@@ -11,7 +11,7 @@ const router = Router()
 router.get('/', async (_req, res) => {
   const config = await prisma.configuracao.findFirst()
   res.json(
-    config ?? { nome: process.env.CLINICA_NOME ?? '[NOME DA CLÍNICA]', endereco: null, whatsapp: null, instagram: null },
+    config ?? { nome: process.env.CLINICA_NOME ?? 'Serrão Santos Fisioterapia', endereco: null, whatsapp: null, instagram: null },
   )
 })
 

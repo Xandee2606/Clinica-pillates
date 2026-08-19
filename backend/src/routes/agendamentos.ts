@@ -170,7 +170,7 @@ router.post('/', validate(criarAgendamentoSchema), async (req, res) => {
         dataHora: agendamento.dataHora,
         duracaoMin: agendamento.modalidade.duracao,
         clinica: {
-          nome: config?.nome ?? process.env.CLINICA_NOME ?? '[NOME DA CLÍNICA]',
+          nome: config?.nome ?? process.env.CLINICA_NOME ?? 'Serrão Santos Fisioterapia',
           endereco: config?.endereco ?? null,
           whatsapp: config?.whatsapp ?? null,
         },

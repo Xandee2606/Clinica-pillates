@@ -97,7 +97,7 @@ async function main() {
   if (!configExistente) {
     await prisma.configuracao.create({
       data: {
-        nome: process.env.CLINICA_NOME ?? '[NOME DA CLÍNICA]',
+        nome: process.env.CLINICA_NOME ?? 'Serrão Santos Fisioterapia',
         endereco: process.env.CLINICA_ENDERECO ?? null,
         whatsapp: process.env.CLINICA_WHATSAPP ?? null,
         instagram: process.env.CLINICA_INSTAGRAM ?? null,

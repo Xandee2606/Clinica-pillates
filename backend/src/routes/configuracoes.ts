@@ -10,7 +10,7 @@ router.get('/', async (_req, res) => {
 
   if (!config) {
     return res.json({
-      nome: process.env.CLINICA_NOME ?? '[NOME DA CLÍNICA]',
+      nome: process.env.CLINICA_NOME ?? 'Serrão Santos Fisioterapia',
       endereco: null,
       whatsapp: null,
       instagram: null,
