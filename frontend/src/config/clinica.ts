@@ -31,8 +31,16 @@ export function linkWhatsApp(telefone: string, mensagem?: string): string {
   return mensagem ? `${base}?text=${encodeURIComponent(mensagem)}` : base
 }
 
-/** Monta o link do perfil no Instagram a partir do handle (com ou sem @). */
+/**
+ * Monta o link do perfil no Instagram a partir do handle.
+ * Tolera `@usuario`, `usuario` ou a URL completa (inclusive com parâmetros de
+ * rastreamento, ex.: `.../pilates.asanorte?utm_source=...`).
+ */
 export function linkInstagram(handle: string): string {
-  const limpo = handle.replace(/^@/, '').replace(/^https?:\/\/(www\.)?instagram\.com\//, '')
+  const limpo = handle
+    .trim()
+    .replace(/^@/, '')
+    .replace(/^https?:\/\/(www\.)?instagram\.com\//i, '')
+    .replace(/[/?#].*$/, '') // remove path/query/fragmento após o usuário
   return `https://instagram.com/${limpo}`
 }
