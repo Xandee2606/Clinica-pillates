@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { LinkButton } from '../ui/Button'
-import { LeafIcon, MenuIcon, CloseIcon } from '../ui/icons'
+import { MenuIcon, CloseIcon } from '../ui/icons'
 import { useClinica } from '../../hooks/useClinica'
 import { linkAgendamento } from '../../config/clinica'
 
@@ -33,9 +33,11 @@ export function Navbar() {
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
         <Link to="/" className="flex items-center gap-2 text-sage-800">
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-sage-600 text-cream-50">
-            <LeafIcon className="h-5 w-5" />
-          </span>
+          <img
+            src="/images/clinica/logo-monograma.png"
+            alt={`${nome} — Studio Pilates`}
+            className="h-11 w-auto"
+          />
           <span className="font-display text-lg font-medium tracking-tight">{nome}</span>
         </Link>
 

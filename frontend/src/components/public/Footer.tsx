@@ -1,4 +1,4 @@
-import { LeafIcon, WhatsAppIcon, InstagramIcon, MapPinIcon } from '../ui/icons'
+import { WhatsAppIcon, InstagramIcon, MapPinIcon } from '../ui/icons'
 import { useClinica } from '../../hooks/useClinica'
 import { linkAgendamento, linkWhatsApp, linkInstagram } from '../../config/clinica'
 
@@ -11,9 +11,11 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="sm:col-span-2 lg:col-span-1">
           <div className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-sage-600 text-cream-50">
-              <LeafIcon className="h-5 w-5" />
-            </span>
+            <img
+              src="/images/clinica/logo-monograma-cream.png"
+              alt={`${nome} — Studio Pilates`}
+              className="h-11 w-auto"
+            />
             <span className="font-display text-lg font-medium">{nome}</span>
           </div>
           <p className="mt-4 max-w-xs font-body text-sm leading-relaxed text-cream-200/80">
