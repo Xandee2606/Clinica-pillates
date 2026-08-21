@@ -28,6 +28,7 @@ o Render pede os valores na criação.
    | `ADMIN_EMAIL` | e-mail de login do painel |
    | `ADMIN_PASSWORD` | senha do painel (**troque a padrão**) |
    | `CLINICA_NOME` | nome da clínica |
+   | `CLINICA_INSTAGRAM` | handle do Instagram (ex.: `pilates.asanorte`) |
    | `GOOGLE_*` / `SMTP_*` | opcionais — deixe em branco se não for usar agora |
 
    > `JWT_SECRET` e `JWT_REFRESH_SECRET` são gerados automaticamente pelo Render.
@@ -52,8 +53,10 @@ git commit --allow-empty -m "redeploy" && git push
 O serviço **hiberna após ~15 minutos sem acesso**. A primeira visita depois disso
 espera **~50 segundos** o servidor acordar. Nas visitas seguintes, fica normal.
 
-Para uso real com clientes agendando, considere um plano pago (Render Starter ou
-Railway Hobby, ~US$ 5–7/mês), que elimina a hibernação.
+Como o site não faz agendamento (os botões levam ao WhatsApp), a hibernação afeta
+apenas o carregamento das modalidades e o acesso ao painel. Se isso incomodar,
+considere um plano pago (Render Starter ou Railway Hobby, ~US$ 5–7/mês), que
+elimina a hibernação.
 
 ---
 

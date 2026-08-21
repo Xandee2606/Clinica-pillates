@@ -1,5 +1,5 @@
 import { Reveal } from './Reveal'
-import { LeafIcon, CalendarIcon, SparkleIcon } from '../ui/icons'
+import { LeafIcon, WhatsAppIcon, SparkleIcon } from '../ui/icons'
 
 const passos = [
   {
@@ -8,14 +8,14 @@ const passos = [
     texto: 'Solo, em grupo ou nos aparelhos — encontre o formato ideal para o seu objetivo.',
   },
   {
-    icone: CalendarIcon,
-    titulo: 'Reserve seu horário',
-    texto: 'Veja os horários livres em tempo real e agende em poucos toques, sem ligações.',
+    icone: WhatsAppIcon,
+    titulo: 'Chame no WhatsApp',
+    texto: 'Você fala direto com a gente, conta o que precisa e combinamos o melhor horário.',
   },
   {
     icone: SparkleIcon,
     titulo: 'Venha se movimentar',
-    texto: 'Você recebe a confirmação por e-mail e é só chegar. O resto é com a gente.',
+    texto: 'Com o horário combinado, é só chegar. O resto é com a gente.',
   },
 ]
 

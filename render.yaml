@@ -41,6 +41,10 @@ services:
       # Dados da clínica (fallback quando não preenchidos no painel admin)
       - key: CLINICA_NOME
         sync: false
+      - key: CLINICA_WHATSAPP
+        value: "5561991678065"
+      - key: CLINICA_INSTAGRAM
+        sync: false
       # Integrações opcionais — sem elas o sistema funciona normalmente,
       # apenas sem evento no Google Agenda e sem e-mail de confirmação.
       - key: GOOGLE_CLIENT_ID

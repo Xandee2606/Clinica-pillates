@@ -2,6 +2,8 @@ import { LinkButton } from '../ui/Button'
 import { Card } from '../ui/Card'
 import { ClockIcon, UsersIcon, LeafIcon, ArrowRightIcon } from '../ui/icons'
 import { formatarBRL, formatarDuracao } from '../../lib/format'
+import { useClinica } from '../../hooks/useClinica'
+import { linkAgendamento } from '../../config/clinica'
 import type { Modalidade } from '../../types'
 
 // Gradientes suaves alternados para o "topo" do card (placeholder de foto).
@@ -18,6 +20,7 @@ interface Props {
 
 export function ModalidadeCard({ modalidade, index }: Props) {
   const gradiente = gradientes[index % gradientes.length]
+  const { whatsapp } = useClinica()
 
   return (
     <Card className="group flex h-full flex-col overflow-hidden transition-shadow hover:shadow-md hover:shadow-sage-900/10">
@@ -63,7 +66,9 @@ export function ModalidadeCard({ modalidade, index }: Props) {
         </div>
 
         <LinkButton
-          to={`/agendamento?modalidade=${modalidade.id}`}
+          href={linkAgendamento(whatsapp, modalidade.nome)}
+          target="_blank"
+          rel="noopener noreferrer"
           variante="secondary"
           className="mt-6 w-full"
         >

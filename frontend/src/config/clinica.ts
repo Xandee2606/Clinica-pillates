@@ -10,7 +10,7 @@ export const CLINICA_FALLBACK = {
   nome: 'Serrão Santos Fisioterapia',
   endereco: 'Rua Exemplo, 123 — Bairro, Cidade/UF',
   // Apenas dígitos, com DDI 55. Ex.: 5511999998888
-  whatsapp: '5599999999999',
+  whatsapp: '5561991678065',
   instagram: 'pilates.asanorte',
 }
 
@@ -29,6 +29,18 @@ export function linkWhatsApp(telefone: string, mensagem?: string): string {
   }
   const base = `https://wa.me/${numero}`
   return mensagem ? `${base}?text=${encodeURIComponent(mensagem)}` : base
+}
+
+/**
+ * Link de agendamento: o site não marca aulas; toda intenção de agendar vai
+ * para o WhatsApp da clínica, onde a dona atende. Quando a origem do clique é
+ * uma modalidade específica, a mensagem já sai preenchida com o nome dela.
+ */
+export function linkAgendamento(telefone: string, modalidade?: string): string {
+  const mensagem = modalidade
+    ? `Olá! Gostaria de agendar uma aula de ${modalidade}.`
+    : 'Olá! Gostaria de agendar uma aula de pilates.'
+  return linkWhatsApp(telefone, mensagem)
 }
 
 /**

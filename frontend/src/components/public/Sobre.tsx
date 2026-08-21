@@ -1,6 +1,8 @@
 import { Reveal } from './Reveal'
 import { LinkButton } from '../ui/Button'
 import { CheckIcon, ArrowRightIcon } from '../ui/icons'
+import { useClinica } from '../../hooks/useClinica'
+import { linkAgendamento } from '../../config/clinica'
 
 const diferenciais = [
   'Turmas reduzidas para atenção individual',
@@ -10,6 +12,8 @@ const diferenciais = [
 ]
 
 export function Sobre() {
+  const { whatsapp } = useClinica()
+
   return (
     <section id="sobre" className="scroll-mt-20 py-20">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-2">
@@ -54,7 +58,12 @@ export function Sobre() {
               ))}
             </ul>
 
-            <LinkButton to="/agendamento" className="mt-8">
+            <LinkButton
+              href={linkAgendamento(whatsapp)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8"
+            >
               Agendar minha primeira aula
               <ArrowRightIcon className="h-5 w-5" />
             </LinkButton>

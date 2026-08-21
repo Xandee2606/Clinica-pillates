@@ -12,8 +12,8 @@ router.get('/', async (_req, res) => {
     return res.json({
       nome: process.env.CLINICA_NOME ?? 'Serrão Santos Fisioterapia',
       endereco: null,
-      whatsapp: null,
-      instagram: null,
+      whatsapp: process.env.CLINICA_WHATSAPP ?? '5561991678065',
+      instagram: process.env.CLINICA_INSTAGRAM ?? null,
     })
   }
 

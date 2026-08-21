@@ -6,8 +6,6 @@ import { AdminLayout } from './components/admin/AdminLayout'
 
 // Páginas públicas
 const Home = lazy(() => import('./pages/Home'))
-const Agendamento = lazy(() => import('./pages/Agendamento'))
-const Confirmacao = lazy(() => import('./pages/Confirmacao'))
 const Login = lazy(() => import('./pages/Login'))
 
 // Páginas admin (carregadas sob demanda — mantêm o Recharts fora do bundle público)
@@ -32,8 +30,6 @@ function App() {
         <Suspense fallback={<CarregandoTela />}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/agendamento" element={<Agendamento />} />
-            <Route path="/confirmacao" element={<Confirmacao />} />
             <Route path="/login" element={<Login />} />
 
             <Route

@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom'
 import { LeafIcon, WhatsAppIcon, InstagramIcon, MapPinIcon } from '../ui/icons'
 import { useClinica } from '../../hooks/useClinica'
-import { linkWhatsApp, linkInstagram } from '../../config/clinica'
+import { linkAgendamento, linkWhatsApp, linkInstagram } from '../../config/clinica'
 
 export function Footer() {
   const { nome, endereco, whatsapp, instagram } = useClinica()
@@ -46,9 +45,14 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <Link to="/agendamento" className="text-cream-200/80 hover:text-cream-50">
+              <a
+                href={linkAgendamento(whatsapp)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cream-200/80 hover:text-cream-50"
+              >
                 Agendar aula
-              </Link>
+              </a>
             </li>
           </ul>
         </div>

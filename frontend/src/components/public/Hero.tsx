@@ -1,7 +1,11 @@
 import { LinkButton } from '../ui/Button'
 import { ArrowRightIcon, LeafIcon, SparkleIcon } from '../ui/icons'
+import { useClinica } from '../../hooks/useClinica'
+import { linkAgendamento } from '../../config/clinica'
 
 export function Hero() {
+  const { whatsapp } = useClinica()
+
   return (
     <section className="relative overflow-hidden">
       {/* Fundo orgânico */}
@@ -24,12 +28,17 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-md font-body text-lg leading-relaxed text-sage-700/90">
-            Aulas de pilates com método, atenção individual e o tempo que o seu corpo pede. Reserve
-            seu horário em menos de um minuto.
+            Aulas de pilates com método, atenção individual e o tempo que o seu corpo pede. Fale
+            com a gente e reserve o seu horário.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <LinkButton to="/agendamento" tamanho="lg">
+            <LinkButton
+              href={linkAgendamento(whatsapp)}
+              target="_blank"
+              rel="noopener noreferrer"
+              tamanho="lg"
+            >
               Agendar agora
               <ArrowRightIcon className="h-5 w-5" />
             </LinkButton>

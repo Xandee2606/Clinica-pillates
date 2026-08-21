@@ -6,7 +6,6 @@ import helmet from 'helmet'
 import { loginRateLimit } from './middleware/rateLimit'
 import authRouter from './routes/auth'
 import modalidadesRouter from './routes/modalidades'
-import agendamentosRouter from './routes/agendamentos'
 import configuracoesRouter from './routes/configuracoes'
 import adminRouter from './routes/admin'
 
@@ -43,7 +42,6 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/auth/login', loginRateLimit)
 app.use('/api/auth', authRouter)
 app.use('/api/modalidades', modalidadesRouter)
-app.use('/api/agendamentos', agendamentosRouter)
 app.use('/api/configuracoes', configuracoesRouter)
 
 // Rotas admin (authMiddleware + adminMiddleware aplicados dentro do router)

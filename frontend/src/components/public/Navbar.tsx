@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { LinkButton } from '../ui/Button'
 import { LeafIcon, MenuIcon, CloseIcon } from '../ui/icons'
 import { useClinica } from '../../hooks/useClinica'
+import { linkAgendamento } from '../../config/clinica'
 
 const links = [
   { label: 'Modalidades', href: '/#modalidades' },
@@ -12,7 +13,8 @@ const links = [
 ]
 
 export function Navbar() {
-  const { nome } = useClinica()
+  const { nome, whatsapp } = useClinica()
+  const hrefAgendar = linkAgendamento(whatsapp)
   const [aberto, setAberto] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -47,7 +49,12 @@ export function Navbar() {
               {l.label}
             </a>
           ))}
-          <LinkButton to="/agendamento" tamanho="sm">
+          <LinkButton
+            href={hrefAgendar}
+            target="_blank"
+            rel="noopener noreferrer"
+            tamanho="sm"
+          >
             Agendar agora
           </LinkButton>
         </div>
@@ -74,7 +81,13 @@ export function Navbar() {
                 {l.label}
               </a>
             ))}
-            <LinkButton to="/agendamento" className="mt-2 w-full" onClick={() => setAberto(false)}>
+            <LinkButton
+              href={hrefAgendar}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 w-full"
+              onClick={() => setAberto(false)}
+            >
               Agendar agora
             </LinkButton>
           </div>

@@ -1,6 +1,10 @@
 # [NOME DA CLÍNICA] — Site + Sistema de Gestão
 
-Monorepo com site público (agendamento de aulas de pilates) e painel administrativo.
+Monorepo com site público (vitrine das modalidades) e painel administrativo.
+
+> **O site não marca aulas.** Todo botão de "Agendar" abre o WhatsApp da clínica,
+> onde o atendimento é feito manualmente. O painel admin é somente-leitura quanto
+> à criação de agendamentos: ele lista, exporta e muda status, mas não cria.
 
 ## Estrutura
 
@@ -51,11 +55,17 @@ npm run dev
    ```
 6. Preencha `GOOGLE_REFRESH_TOKEN` e `GOOGLE_CALENDAR_ID` (ex.: `primary`) no `.env`.
 
-> A integração é **opcional e resiliente**: se as credenciais não estiverem
-> configuradas, os agendamentos continuam funcionando normalmente (sem evento no
-> calendário). Nenhuma falha do Google Calendar impede a criação de um agendamento.
+> A integração é **opcional e resiliente**. Hoje ela é usada apenas para
+> **cancelar** eventos quando um agendamento é cancelado pelo painel
+> (`PATCH /api/admin/agendamentos/:id/status`). A criação de eventos não é mais
+> acionada, já que o sistema não cria agendamentos.
 
 ## Configuração de e-mail (Nodemailer + Gmail)
+
+> **Atualmente inativo.** O e-mail de confirmação era disparado pelo fluxo público
+> de agendamento, que foi removido. `src/services/mailer.ts` continua no
+> repositório, mas nenhuma rota o chama. As variáveis abaixo só voltam a ser
+> necessárias se o envio for religado.
 
 1. Ative a verificação em duas etapas na conta Gmail que enviará os e-mails.
 2. Gere uma [senha de app](https://myaccount.google.com/apppasswords).
