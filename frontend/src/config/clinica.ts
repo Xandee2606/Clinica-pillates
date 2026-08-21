@@ -11,7 +11,7 @@ export const CLINICA_FALLBACK = {
   endereco: 'Rua Exemplo, 123 — Bairro, Cidade/UF',
   // Apenas dígitos, com DDI 55. Ex.: 5511999998888
   whatsapp: '5599999999999',
-  instagram: 'nomedaclinica',
+  instagram: 'pilates.asanorte',
 }
 
 /** Remove tudo que não for dígito de um telefone. */
